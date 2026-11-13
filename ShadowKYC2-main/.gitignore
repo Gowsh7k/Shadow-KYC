@@ -1,0 +1,39 @@
+# ==============================================================================
+# Python Virtual Environments
+# ==============================================================================
+venv/
+env/
+.venv/
+
+# Frontend dependencies
+**/node_modules/
+**/dist/
+
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+
+# Secrets & local env
+.env
+*.env
+!.env.example
+
+# Local databases & test states
+**/db.json
+**/sessions_state.json
+
+# Runtime folders
+**/evidence/*
+!**/evidence/.gitkeep
+**/reports/*
+!**/reports/.gitkeep
+**/temp_uploads/*
+!**/temp_uploads/.gitkeep
+
+# IDE & OS caches
+.vscode/
+.idea/
+.gemini/
+*.log
+Thumbs.db
+.DS_Store

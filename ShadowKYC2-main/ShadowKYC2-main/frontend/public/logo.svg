@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" width="100%" height="100%">
+  <defs>
+    <style>
+      .logo-text {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 900;
+        font-size: 110px;
+        letter-spacing: -2px;
+      }
+      .letter-s {
+        fill: #000000;
+      }
+      .letter-kyc {
+        fill: #FDC504;
+      }
+      @media (prefers-color-scheme: dark) {
+        .letter-s { fill: #FFFFFF; }
+      }
+    </style>
+  </defs>
+  <text x="5" y="96" class="logo-text">
+    <tspan class="letter-s">S</tspan><tspan class="letter-kyc">KYC</tspan>
+  </text>
+</svg>

@@ -1,0 +1,65 @@
+# ==============================================================================
+# Python Virtual Environments
+# (Never push venv/lib - dependencies should be installed from requirements.txt)
+# ==============================================================================
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Frontend dependencies & build artifacts
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+.npm/
+
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environment variables & secrets
+.env
+.env.local
+*.env
+!.env.example
+
+# Local database & session files generated during runtime
+db.json
+sessions_state.json
+*.sqlite3
+*.db
+
+# Runtime output directories (keep folder structure via .gitkeep)
+evidence/*
+!evidence/.gitkeep
+reports/*
+!reports/.gitkeep
+temp_uploads/*
+!temp_uploads/.gitkeep
+temp_uploads/docs/*
+
+# Logs
+*.log
+
+# Editor & Tooling caches
+.vscode/
+.idea/
+.gemini/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
