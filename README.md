@@ -1,696 +1,401 @@
-\# Shadow-KYC
+# Shadow-KYC
+### AI-Powered Video KYC Verification System
 
+<p align="center">
+  <strong>A multi-layer video verification platform designed to identify suspicious activity during digital identity verification.</strong>
+</p>
 
+<p align="center">
+  <img src="screenshots/01-landing-page.jpeg" alt="Shadow-KYC Landing Page" width="850"/>
+</p>
 
-\### Multi-Layer Video KYC Integrity and Deepfake Risk Analysis
+---
 
+## Overview
 
+Shadow-KYC is an AI-assisted video Know Your Customer (KYC) verification platform designed to strengthen digital identity verification.
 
-Shadow-KYC is a video integrity analysis application designed to identify suspicious indicators during remote Know Your Customer (KYC) verification. It examines facial behavior, identity consistency, visual artifacts, facial geometry, mouth movement, and environmental signals through a seven-layer analysis pipeline.
+Traditional video KYC systems may be vulnerable to identity spoofing, replay attacks, manipulated video feeds, and deepfake-based impersonation. Shadow-KYC addresses these risks through a layered verification pipeline that analyzes facial behavior, temporal consistency, visual artifacts, lip synchronization, and environmental signals.
 
+The system combines these analysis results through a meta-fusion engine to generate an explainable risk assessment.
 
+## Key Features
 
-Rather than relying on a single facial recognition result, the system combines multiple signals to produce a session-level risk assessment with supporting indicators and evidence.
+- **Multi-layer verification:** Seven specialized analysis layers evaluate different aspects of a video session.
+- **Temporal liveness analysis:** Examines facial and movement patterns across video frames.
+- **Face matching:** Evaluates facial identity consistency.
+- **Deepfake artifact analysis:** Checks for visual irregularities and manipulation indicators.
+- **Lip synchronization:** Analyzes synchronization between mouth movement and audio.
+- **Environment analysis:** Evaluates environmental consistency.
+- **Meta-fusion engine:** Combines available layer results into a consolidated risk assessment.
+- **Live verification workflow:** Supports real-time communication through WebSockets.
+- **Role-based interfaces:** Separate workflows for officers and clients.
+- **Evidence and reporting:** Supports verification evidence management and report generation.
 
+---
 
+## Application Screenshots
 
-> Shadow-KYC is a security and fraud-analysis prototype. Its results are risk indicators, not guaranteed proof of authenticity or fraud.
+### 1. Landing Page
 
+The main entry point to the Shadow-KYC platform.
 
+![Landing Page](screenshots/01-landing-page.jpeg)
 
-\---
+### 2. Authentication
 
+**Officer Login**
 
+![Officer Login](screenshots/02-officer-login.jpeg)
 
-\## Overview
+**Client Login**
 
+![Client Login](screenshots/03-client-login.jpeg)
 
+### 3. Officer Dashboard
 
-Remote video verification can be exposed to replay attacks, presentation attacks, synthetic facial media, face manipulation, and other forms of video tampering.
+The officer interface provides access to verification sessions and related KYC activities.
 
+![Officer Dashboard](screenshots/04-officer-dashboard.jpeg)
 
+### 4. Client Dashboard
 
-Shadow-KYC provides an additional video integrity analysis layer that can be used alongside existing KYC workflows.
+The client interface allows users to participate in verification sessions and access their KYC-related activities.
 
+![Client Dashboard](screenshots/05-client-dashboard.jpeg)
 
+### 5. Live KYC Verification
 
-The application supports:
+The live verification interface supports video-based identity checks and analysis.
 
-\- Live video session analysis.
+![Live Verification](screenshots/06-live-verification.jpeg)
 
-\- Recorded video analysis.
+### 6. Camera Setup
 
-\- Facial landmark and temporal analysis.
+The camera setup interface allows users to configure their camera before starting verification.
 
-\- Multi-layer risk evaluation.
+![Camera Setup](screenshots/07-camera-setup.jpeg)
 
-\- Evidence and report generation.
+### 7. Verification Results
 
-\- Customer and officer authentication workflows.
+The result interface displays the verification outcome and available analysis information.
 
-\- KYC session and document workflows.
+![Verification Result](screenshots/08-verification-result.jpeg)
 
+---
 
+## System Architecture
 
-\## Seven-Layer Analysis Pipeline
+Shadow-KYC uses a seven-layer analysis pipeline coordinated by a session orchestrator.
 
+```text
+             Video Input
+                  |
+                  v
+          Session Orchestrator
+                  |
+        +---------+---------+
+        |                   |
+        v                   v
+   Frame Processing   Challenge Manager
+        |
+        v
+  +-----------------------+
+  |  Seven-Layer Analysis |
+  +-----------------------+
+        |
+        +--> L1: Temporal Liveness
+        |
+        +--> L2: Face Matching
+        |
+        +--> L3: Texture & Artifact Analysis
+        |
+        +--> L4: Facial Geometry
+        |
+        +--> L5: Lip Synchronization
+        |
+        +--> L6: Environment Analysis
+        |
+        +--> L7: Meta-Fusion
+                  |
+                  v
+          Risk Assessment
+                  |
+                  v
+        Verification Result
+                  |
+                  v
+          Evidence & Report
+```
 
-
-The application uses a single orchestrated pipeline consisting of seven complementary analysis layers. These are components of one application, not autonomous AI agents.
-
-
+## Seven-Layer Verification Pipeline
 
 | Layer | Component | Purpose |
-
 |---|---|---|
+| L1 | Temporal Liveness | Analyzes facial movement and temporal consistency. |
+| L2 | Face Matching | Evaluates facial identity consistency. |
+| L3 | Texture & Artifact Analysis | Identifies suspicious visual artifacts. |
+| L4 | Facial Geometry | Examines facial proportions and geometric consistency. |
+| L5 | Lip Synchronization | Analyzes synchronization between lip movement and audio. |
+| L6 | Environment Analysis | Examines environmental consistency and suspicious changes. |
+| L7 | Meta-Fusion | Combines analysis signals to produce a consolidated risk assessment. |
 
-| L1 | Temporal Liveness | Examines blinking, head movement, facial landmarks and frozen-frame behavior. |
+### Meta-Fusion Engine
 
-| L2 | Face Match | Monitors facial representation consistency and identity drift. |
+The meta-fusion engine combines the outputs of the verification layers using weighted scoring.
 
-| L3 | Texture and Artifact Analysis | Examines texture and frequency characteristics, including presentation and synthetic-media indicators. |
-
-| L4 | Geometry Integrity | Evaluates facial landmark relationships, proportions and geometric changes. |
-
-| L5 | Lip-Sync Integrity | Examines mouth movement and related speech activity indicators. |
-
-| L6 | Environment Integrity | Checks background movement, lighting changes and visual inconsistencies. |
-
-| L7 | Meta-Fusion | Combines layer outputs, contradiction rules and critical security vetoes into a risk assessment. |
-
-
-
-\### Analysis Flow
-
-
-
-```text
-
-&#x20;            Live Camera / Recorded Video
-
-&#x20;                        |
-
-&#x20;                        v
-
-&#x20;              Frame Sampling
-
-&#x20;                        |
-
-&#x20;                        v
-
-&#x20;                Face Detection
-
-&#x20;                        |
-
-&#x20;                        v
-
-&#x20;               Session Orchestrator
-
-&#x20;                        |
-
-&#x20;         +--------------+--------------+
-
-&#x20;         |              |              |
-
-&#x20;         v              v              v
-
-&#x20;      L1 Liveness    L2 Face Match   L3 Texture
-
-&#x20;         |              |              |
-
-&#x20;         +--------------+--------------+
-
-&#x20;                        |
-
-&#x20;         +--------------+--------------+
-
-&#x20;         |              |              |
-
-&#x20;         v              v              v
-
-&#x20;      L4 Geometry    L5 Lip-Sync    L6 Environment
-
-&#x20;         |              |              |
-
-&#x20;         +--------------+--------------+
-
-&#x20;                        |
-
-&#x20;                        v
-
-&#x20;                  L7 Meta-Fusion
-
-&#x20;                        |
-
-&#x20;                        v
-
-&#x20;             Risk Assessment and Evidence
-
-&#x20;                        |
-
-&#x20;                        v
-
-&#x20;                Session Report
-
-```
-
-
-
-\## Risk Evaluation
-
-
-
-The meta-fusion engine combines the available layer signals using weighted risk contributions.
-
-
-
-\### Layer weights
-
-
-
-| Layer | Weight |
-
+| Analysis Layer | Weight |
 |---|---:|
-
 | L1 – Temporal Liveness | 0.25 |
-
-| L2 – Face Match | 0.20 |
-
-| L3 – Texture Analysis | 0.25 |
-
-| L4 – Geometry | 0.10 |
-
-| L5 – Lip-Sync | 0.10 |
-
-| L6 – Environment | 0.10 |
-
-| \*\*Total\*\* | \*\*1.00\*\* |
-
-
-
-Unavailable layer values are handled through active-weight normalization rather than automatically treating every unavailable signal as suspicious.
-
-
-
-\### Additional security checks
-
-
-
-The fusion engine also evaluates combinations of suspicious indicators. Examples include:
-
-\- Unnatural facial stability alongside background motion.
-
-\- Face-swap indicators combined with frozen-frame replay.
-
-\- Facial smoothing combined with geometric distortion.
-
-\- Frozen mouth movement alongside background activity.
-
-
-
-Critical spoof indicators can trigger security vetoes that escalate the risk assessment independently of the ordinary weighted score.
-
-
-
-\### Risk categories
-
-
-
-The frame-level fusion engine uses these thresholds:
-
-
-
-| Risk score | Classification |
-
-|---|---|
-
-| Below 0.30 | LOW RISK |
-
-| 0.30 to below 0.60 | MEDIUM RISK |
-
-| 0.60 and above | HIGH RISK |
-
-
-
-Session-level decisions can also consider active liveness completion, deepfake indicators, and the number of flagged frames.
-
-
-
-\## Technology Stack
-
-
-
-\### Backend
-
-\- Python
-
-\- FastAPI
-
-\- Uvicorn
-
-\- OpenCV
-
-\- MediaPipe
-
-\- NumPy
-
-\- SciPy
-
-\- ONNX model support
-
-\- WebSockets
-
-
-
-\### Frontend
-
-\- React 18
-
-\- Vite
-
-\- React Router
-
-\- Chart.js
-
-\- React Chart.js 2
-
-\- Lucide React
-
-
-
-\### Authentication and Data
-
-\- JWT-based authentication
-
-\- Argon2 password hashing
-
-\- Optional Supabase integration
-
-\- Local backend persistence
-
-
-
-\### Model Assets
-
-\- MediaPipe Face Landmarker
-
-\- MiniFASNet-V2 ONNX model
-
-
-
-\## Project Structure
-
-
+| L2 – Face Matching | 0.20 |
+| L3 – Texture & Artifact Analysis | 0.25 |
+| L4 – Facial Geometry | 0.10 |
+| L5 – Lip Synchronization | 0.10 |
+| L6 – Environment Analysis | 0.10 |
+
+The fusion process includes:
+
+- Dynamic normalization based on available analysis layers.
+- Contradiction detection between different layer outputs.
+- Critical spoof and risk veto rules.
+- Consideration of active liveness challenges.
+- Consolidation of layer outputs into a frame-level risk assessment.
+
+The frame-level meta-fusion thresholds include:
+
+| Risk Level | Threshold |
+|---|---:|
+| Medium | 0.30 |
+| High | 0.60 |
+
+These are frame-level thresholds; session-level decisions may apply additional orchestration rules.
+
+---
+
+## Technology Stack
+
+### Backend
+
+- Python 3.13
+- FastAPI
+- Uvicorn
+- OpenCV
+- MediaPipe
+- NumPy
+- SciPy
+- Pillow
+- WebSockets
+- Python-JOSE
+- Argon2
+
+### Frontend
+
+- React 18
+- Vite
+- JavaScript
+- HTML5
+- CSS3
+- React Router
+- Chart.js
+- Lucide React
+
+### Communication and Processing
+
+- REST API
+- WebSocket communication
+- Video frame processing
+- Layer-based analysis
+- Session orchestration
+
+---
+
+## Project Structure
 
 ```text
-
 Shadow-KYC/
-
 │
-
-├── ShadowKYC2-main/
-
-│   └── ShadowKYC2-main/
-
-│       ├── app/
-
-│       │   ├── api/
-
-│       │   ├── core/
-
-│       │   │   ├── config.py
-
-│       │   │   ├── orchestrator.py
-
-│       │   │   ├── session\_manager.py
-
-│       │   │   └── types.py
-
-│       │   ├── models/
-
-│       │   ├── modules/
-
-│       │   │   ├── layer\_1\_temporal\_liveness.py
-
-│       │   │   ├── layer\_2\_face\_match.py
-
-│       │   │   ├── layer\_3\_texture\_artifact.py
-
-│       │   │   ├── layer\_4\_geometry.py
-
-│       │   │   ├── layer\_5\_lipsync.py
-
-│       │   │   ├── layer\_6\_environment.py
-
-│       │   │   ├── layer\_7\_meta\_fusion.py
-
-│       │   │   ├── challenge\_manager.py
-
-│       │   │   ├── deepfake\_detector.py
-
-│       │   │   ├── evidence\_manager.py
-
-│       │   │   └── report\_generator.py
-
-│       │   ├── auth.py
-
-│       │   ├── database.py
-
-│       │   ├── main.py
-
-│       │   └── supabase\_client.py
-
-│       │
-
-│       ├── frontend/
-
-│       │   ├── public/
-
-│       │   └── src/
-
-│       │       ├── components/
-
-│       │       ├── lib/
-
-│       │       ├── pages/
-
-│       │       ├── App.jsx
-
-│       │       └── main.jsx
-
-│       │
-
-│       ├── docs/
-
-│       ├── tests/
-
-│       ├── evidence/
-
-│       ├── reports/
-
-│       ├── temp\_uploads/
-
-│       ├── requirements.txt
-
-│       ├── .env.example
-
-│       └── supabase\_schema.sql
-
+├── app/
+│   ├── main.py
+│   ├── core/
+│   │   ├── orchestrator.py
+│   │   ├── challenge_manager.py
+│   │   ├── deepfake_detector.py
+│   │   ├── evidence_manager.py
+│   │   └── report_generator.py
+│   │
+│   ├── layer_1_temporal_liveness.py
+│   ├── layer_2_face_match.py
+│   ├── layer_3_texture_artifact.py
+│   ├── layer_4_geometry.py
+│   ├── layer_5_lipsync.py
+│   ├── layer_6_environment.py
+│   └── layer_7_meta_fusion.py
 │
-
-├── run.bat
-
-├── run.ps1
-
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+├── tests/
+│
+├── screenshots/
+│   ├── 01-landing-page.jpeg
+│   ├── 02-officer-login.jpeg
+│   ├── 03-client-login.jpeg
+│   ├── 04-officer-dashboard.jpeg
+│   ├── 05-client-dashboard.jpeg
+│   ├── 06-live-verification.jpeg
+│   ├── 07-camera-setup.jpeg
+│   └── 08-verification-result.jpeg
+│
+├── requirements.txt
+├── .env.example
 └── README.md
-
 ```
 
+*The structure above illustrates the main application components. Refer to the repository for the complete directory structure.*
 
+---
 
-\## Getting Started
+## Installation and Setup
 
+### Prerequisites
 
+Make sure the following are installed:
 
-\### Prerequisites
+- Python 3.13
+- Node.js and npm
+- Git
 
+### 1. Clone the Repository
 
-
-\- Python 3.13
-
-\- Node.js and npm
-
-\- Git
-
-\- A webcam for live camera analysis
-
-
-
-\### 1. Clone the repository
-
-
-
-```powershell
-
+```bash
 git clone https://github.com/Gowsh7k/Shadow-KYC.git
-
 cd Shadow-KYC
-
 ```
 
+### 2. Backend Setup
 
+Create and activate a virtual environment.
 
-\### 2. Navigate to the application directory
-
-
-
-```powershell
-
-cd ShadowKYC2-main\\ShadowKYC2-main
-
-```
-
-
-
-\### 3. Set up the Python environment
-
-
+**Windows PowerShell**
 
 ```powershell
-
 python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
 
-.\\venv\\Scripts\\Activate.ps1
+Install the dependencies:
 
-python -m pip install --upgrade pip
-
+```powershell
 pip install -r requirements.txt
-
 ```
 
+Configure the environment variables using `.env.example` as a reference. Set the required secret key and other configuration values before running the application.
 
-
-\### 4. Configure environment variables
-
-
-
-Create a local `.env` file:
-
-
+Start the backend:
 
 ```powershell
-
-Copy-Item .env.example .env
-
-```
-
-
-
-Set a secure `SECRET\_KEY` in the `.env` file.
-
-
-
-The configuration template also provides optional Supabase settings. Local backend authentication is available when Supabase is not configured.
-
-
-
-Never commit the actual `.env` file or secret credentials.
-
-
-
-\### 5. Start the backend
-
-
-
-From the application directory:
-
-
-
-```powershell
-
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-
 ```
 
-
-
-Backend:
-
-
+The backend will be available at:
 
 ```text
-
 http://127.0.0.1:8000
-
 ```
 
+### 3. Frontend Setup
 
+Open another terminal and navigate to the frontend directory:
 
-API documentation:
+```powershell
+cd frontend
+npm install
+npm run dev
+```
 
+Open the local development URL printed by Vite in your browser.
 
+---
+
+## API Documentation
+
+The backend exposes REST API endpoints and WebSocket communication for verification workflows.
+
+| Endpoint | Purpose |
+|---|---|
+| `/health` | Health check |
+| `/ping` | Connectivity check |
+| `/auth/signup` | User registration |
+| `/auth/login` | User authentication |
+| `/auth/logout` | User logout |
+| `/session/create` | Create a verification session |
+| `/analyze-session` | Analyze a verification session |
+| `/upload-recording` | Upload a recording |
+| `/ws/session/{session_id}/{role}` | Session WebSocket communication |
+
+Additional KYC, document, verification, decision, query, and audit routes are available in the backend.
+
+Interactive API documentation:
 
 ```text
-
 http://127.0.0.1:8000/docs
-
 ```
 
+---
 
+## Running Tests
 
-\### 6. Start the frontend
-
-
-
-Open a second PowerShell window:
-
-
+Run the backend test suite from the repository root:
 
 ```powershell
-
-cd Shadow-KYC\\ShadowKYC2-main\\ShadowKYC2-main\\frontend
-
-npm install
-
-npm run dev
-
-```
-
-
-
-The frontend uses Vite for development. Its proxy configuration forwards supported backend requests to the FastAPI server.
-
-
-
-\## API Capabilities
-
-
-
-The FastAPI application exposes endpoints covering:
-
-
-
-| Area | Example routes |
-
-|---|---|
-
-| Health | `/health`, `/ping` |
-
-| Authentication | `/auth/signup`, `/auth/login`, `/auth/logout` |
-
-| Video analysis | `/analyze-session`, `/upload-recording` |
-
-| Live sessions | `/session/create`, `/ws/session/{session\_id}/{role}` |
-
-| KYC applications | `/kyc/applications` |
-
-| KYC sessions | `/kyc/sessions` |
-
-| Documents | `/documents/upload`, `/documents` |
-
-| Verification | `/verification/results` |
-
-| Decisions | `/kyc/decisions` |
-
-| Queries | `/queries` |
-
-| Audit | `/audit` |
-
-
-
-For request parameters, response schemas, and interactive testing, use the FastAPI documentation at `/docs`.
-
-
-
-\## Running Tests
-
-
-
-From the application directory:
-
-
-
-```powershell
-
 python -m pytest tests/ -v
-
 ```
 
+---
 
+## Security and Privacy Considerations
 
-The repository contains tests covering backend behavior, deepfake analysis, and LiveGuard-related functionality.
+- Authentication and token-based access are supported.
+- Password handling uses Argon2.
+- Environment secrets should be stored in environment variables.
+- Do not commit `.env` files, credentials, private keys, or sensitive KYC records.
+- Access to identity documents and verification evidence should be restricted.
+- Production deployment should include appropriate HTTPS, access controls, logging, and data-retention policies.
 
+## Limitations
 
+Shadow-KYC is a development project and its analysis results should be treated as risk indicators rather than definitive proof of identity or fraud.
 
-\## Security and Privacy Considerations
+- Model performance depends on input video quality and environmental conditions.
+- Some analysis layers may be unavailable for certain sessions.
+- Risk scores do not guarantee the detection of every spoofing or deepfake attempt.
+- Production use requires further validation, security testing, and compliance review.
 
+The platform should not be used as the sole basis for financial, identity, or regulatory decisions without appropriate human review.
 
+---
 
-Video KYC data can contain sensitive personal and biometric information.
+## Future Enhancements
 
+- Improve model accuracy and robustness across different environments.
+- Expand testing with diverse real-world and spoofed video samples.
+- Improve verification explainability and evidence visualization.
+- Strengthen production authentication and access control.
+- Optimize real-time processing performance.
+- Extend audit and reporting capabilities.
 
+---
 
-Before any real-world deployment:
+## License
 
-\- Use strong secrets and restrict access to credentials.
+Add the applicable license information before distributing or reusing this project. No license is assumed by this README.
 
-\- Configure appropriate CORS origins.
+---
 
-\- Protect uploaded recordings and evidence files.
-
-\- Apply access controls to customer and officer workflows.
-
-\- Define secure retention and deletion policies.
-
-\- Evaluate tenant and session isolation.
-
-\- Validate detection performance using representative datasets.
-
-\- Ensure that human review and applicable KYC policies remain part of the decision process.
-
-
-
-\## Limitations
-
-
-
-The system should be treated as a prototype and decision-support layer.
-
-
-
-Detection performance may be affected by:
-
-\- Poor lighting and camera quality.
-
-\- Face occlusion and extreme head angles.
-
-\- Compression and frame loss.
-
-\- Legitimate unusual facial movement.
-
-\- Changes in recording environments.
-
-\- New synthetic-media techniques.
-
-
-
-The risk score should not be treated as definitive proof of identity or fraud. It should not be the sole basis for financial, identity, or compliance decisions.
-
-
-
-\## License
-
-
-
-Add or confirm the project's chosen license before public redistribution or production use.
-
-
-
-\---
-
-
-
-\*\*Project Goal:\*\* Make video KYC harder to fool by evaluating not only the identity being presented, but also whether the video itself demonstrates consistent and trustworthy characteristics.
-
-
-
+<p align="center">
+  <strong>Shadow-KYC</strong><br/>
+  AI-Assisted Video Identity Verification
+</p>
